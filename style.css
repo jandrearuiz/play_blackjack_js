@@ -1,0 +1,22 @@
+body {
+    background-color: #2f4f30;
+    color: white;
+}
+.header {
+    background-color: black;
+    text-align: center;
+    padding: 20px;
+    font-size: 25px;
+}
+.carta {
+    position: relative;
+    left: 100px;
+    width: 150px;
+    margin-left: -75px;
+}
+.jugador, .computador {
+    height: 250px;
+}
+.image {
+    height: 200px;
+}
