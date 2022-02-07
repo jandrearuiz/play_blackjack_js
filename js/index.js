@@ -1,12 +1,11 @@
 const newGame = document.querySelector("#new-game");
-const newLetter = document.querySelector("#new-letter");
+const newCard = document.querySelector("#new-card");
 const stopGame = document.querySelector("#stop");
 
-let gameLetter = [];
-let compLetter = [];
 let cardValues = [];
+let cardValuesCp = [];
 const types = ["C", "D", "H", "S"];
-const letters = ["A", "J", "Q", "K"];
+const cards = ["A", "J", "Q", "K"];
 
 // Array de Cartas en orden
 const createCombination = () => {
@@ -18,9 +17,9 @@ const createCombination = () => {
     }
   }
 
-  for (let letter of letters) {
+  for (let card of cards) {
     for (let type of types) {
-      combination.push(letter + type);
+      combination.push(card + type);
     }
   }
 
@@ -28,7 +27,7 @@ const createCombination = () => {
 };
 
 // Generar un array aleatorio
-const aleatoryLetters = () => {
+const aleatoryCards = () => {
   let array = createCombination();
 
   let i = array.length;
@@ -49,8 +48,8 @@ const aleatoryLetters = () => {
 
 // Botón Pedir Carta - Empieza el jugador
 const getBtn = (nCard) => {
-  let gamerLetter = aleatoryLetters();
-  let game = gamerLetter.slice(0, nCard);
+  let gamerCard = aleatoryCards();
+  let game = gamerCard.slice(0, nCard);
 
   const gamerSelection = document.querySelector("#jugador-carta");
   for (let card of game) {
@@ -59,10 +58,8 @@ const getBtn = (nCard) => {
       "beforeend",
       `<img class="image" src="./assets/cartas/${card}.png"/>`
     );
-    
-    cardValue = card.slice(0, card.length-1); 
 
-    console.log(cardValue);
+    cardValue = card.slice(0, card.length - 1);
 
     if (cardValue === "A") cardValue = 11;
     if (cardValue === "J") cardValue = 10;
@@ -75,41 +72,47 @@ const getBtn = (nCard) => {
   const sum = cardValues.reduce((a, b) => a + b, 0);
   console.log(cardValues);
   console.log(sum);
+  return gamerSelection;
 };
 
 // Botón Detener - Empieza la computadora
-const stopBtn = () => {
-  let computerLetter = aleatoryLetters();
-  let game = computerLetter.shift();
+const stopBtn = (nCard) => {
+  let computerCard = aleatoryCards();
+  let game = computerCard.slice(0, nCard);
 
   const computerSelection = document.querySelector("#computador-carta");
-  computerSelection.insertAdjacentHTML(
-    "beforeend",
-    `<img class="image" src="./assets/cartas/${game}.png"/>`
-  );
+  for (let card of game) {
+    let cardValue;
+    computerSelection.insertAdjacentHTML(
+      "beforeend",
+      `<img class="image" src="./assets/cartas/${card}.png"/>`
+    );
 
-  let cardValue = game[0];
+    cardValue = card.slice(0, card.length - 1);
 
-  if (cardValue === "A") cardValue = 11;
-  if (cardValue === "J") cardValue = 10;
-  if (cardValue === "Q") cardValue = 10;
-  if (cardValue === "K") cardValue = 10;
+    if (cardValue === "A") cardValue = 11;
+    if (cardValue === "J") cardValue = 10;
+    if (cardValue === "Q") cardValue = 10;
+    if (cardValue === "K") cardValue = 10;
 
-  compLetter.push(+cardValue);
+    cardValuesCp.push(+cardValue);
+  }
 
-  const sum = compLetter.reduce((a, b) => a + b, 0);
-
-  console.log(compLetter);
+  const sum = cardValuesCp.reduce((a, b) => a + b, 0);
+  console.log(cardValuesCp);
   console.log(sum);
+
+  return computerSelection;
 };
 
 // Botón Nuevo Juego - Reiniciar Juego
 const gameBtn = () => {
   getBtn(2);
+  stopBtn(1);
 
-  console.log("Nuevo Juego");
+  newGame.disabled = true;
 };
 
-newLetter.addEventListener("click", getBtn.bind(null, 1));
-stopGame.addEventListener("click", stopBtn);
+newCard.addEventListener("click", getBtn.bind(null, 1));
+stopGame.addEventListener("click", stopBtn.bind(null, 1));
 newGame.addEventListener("click", gameBtn);
