@@ -8,15 +8,13 @@ body {
     padding: 20px;
     font-size: 25px;
 }
-.carta {
-    position: relative;
-    left: 100px;
-    width: 150px;
-    margin-left: -75px;
-}
 .content-card {
     height: 250px;
 }
 .image {
+    position: relative;
+    left: 80px;
+    width: 150px;
     height: 200px;
+    margin-left: -75px;
 }

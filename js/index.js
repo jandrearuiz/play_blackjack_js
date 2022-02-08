@@ -4,6 +4,8 @@ const stopGame = document.querySelector("#stop");
 
 let playerCardValues = [];
 let computerCardValues = [];
+let sumPlayer = 0;
+let sumComputer = 0;
 const types = ["C", "D", "H", "S"];
 const cards = ["A", "J", "Q", "K"];
 
@@ -54,7 +56,7 @@ const getGame = (nCard, idGameContainer, cardValues) => {
 
   for (let card of game) {
     let cardValue;
-    
+
     gamerSelection.insertAdjacentHTML(
       "beforeend",
       `<img class="image" src="./assets/cartas/${card}.png"/>`
@@ -70,19 +72,32 @@ const getGame = (nCard, idGameContainer, cardValues) => {
     cardValues.push(+cardValue);
   }
 
-  const sum = cardValues.reduce((a, b) => a + b, 0);
-  console.log(cardValues);
-  console.log(sum);
+  return cardValues.reduce((a, b) => a + b, 0);
 };
 
 // Botón Nuevo Juego - Reiniciar Juego
 const gameBtn = () => {
-  getGame(2, "#player-card", playerCardValues);
-  getGame(1, "#computer-card", computerCardValues);
+  sumPlayer = getGame(2, "#player-card", playerCardValues);
+  sumComputer = getGame(1, "#computer-card", computerCardValues);
+
+  if (sumComputer > sumPlayer) {
+    newGame.disabled = false;
+  }
 
   newGame.disabled = true;
+
+  console.log(sumPlayer);
+  console.log(sumComputer);
 };
 
-newCard.addEventListener("click", getGame.bind(null, 1, "#player-card", playerCardValues));
-stopGame.addEventListener("click", getGame.bind(null, 1, "#computer-card", computerCardValues));
+newCard.addEventListener("click", () => {
+  sumPlayer = getGame(1, "#player-card", playerCardValues);
+  console.log(sumPlayer);
+  console.log(sumComputer);
+});
+stopGame.addEventListener("click", () => {
+  sumComputer = getGame(1, "#computer-card", computerCardValues);
+  console.log(sumPlayer);
+  console.log(sumComputer);
+});
 newGame.addEventListener("click", gameBtn);
