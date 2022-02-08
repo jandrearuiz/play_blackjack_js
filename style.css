@@ -14,7 +14,7 @@ body {
     width: 150px;
     margin-left: -75px;
 }
-.jugador, .computador {
+.content-card {
     height: 250px;
 }
 .image {

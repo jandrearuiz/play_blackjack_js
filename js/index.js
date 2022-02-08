@@ -2,8 +2,8 @@ const newGame = document.querySelector("#new-game");
 const newCard = document.querySelector("#new-card");
 const stopGame = document.querySelector("#stop");
 
-let cardValues = [];
-let cardValuesCp = [];
+let playerCardValues = [];
+let computerCardValues = [];
 const types = ["C", "D", "H", "S"];
 const cards = ["A", "J", "Q", "K"];
 
@@ -46,14 +46,15 @@ const aleatoryCards = () => {
   return array;
 };
 
-// Botón Pedir Carta - Empieza el jugador
-const getBtn = (nCard) => {
+// Función para lanzar las cartas
+const getGame = (nCard, idGameContainer, cardValues) => {
   let gamerCard = aleatoryCards();
   let game = gamerCard.slice(0, nCard);
+  const gamerSelection = document.querySelector(idGameContainer);
 
-  const gamerSelection = document.querySelector("#jugador-carta");
   for (let card of game) {
     let cardValue;
+    
     gamerSelection.insertAdjacentHTML(
       "beforeend",
       `<img class="image" src="./assets/cartas/${card}.png"/>`
@@ -72,47 +73,16 @@ const getBtn = (nCard) => {
   const sum = cardValues.reduce((a, b) => a + b, 0);
   console.log(cardValues);
   console.log(sum);
-  return gamerSelection;
-};
-
-// Botón Detener - Empieza la computadora
-const stopBtn = (nCard) => {
-  let computerCard = aleatoryCards();
-  let game = computerCard.slice(0, nCard);
-
-  const computerSelection = document.querySelector("#computador-carta");
-  for (let card of game) {
-    let cardValue;
-    computerSelection.insertAdjacentHTML(
-      "beforeend",
-      `<img class="image" src="./assets/cartas/${card}.png"/>`
-    );
-
-    cardValue = card.slice(0, card.length - 1);
-
-    if (cardValue === "A") cardValue = 11;
-    if (cardValue === "J") cardValue = 10;
-    if (cardValue === "Q") cardValue = 10;
-    if (cardValue === "K") cardValue = 10;
-
-    cardValuesCp.push(+cardValue);
-  }
-
-  const sum = cardValuesCp.reduce((a, b) => a + b, 0);
-  console.log(cardValuesCp);
-  console.log(sum);
-
-  return computerSelection;
 };
 
 // Botón Nuevo Juego - Reiniciar Juego
 const gameBtn = () => {
-  getBtn(2);
-  stopBtn(1);
+  getGame(2, "#player-card", playerCardValues);
+  getGame(1, "#computer-card", computerCardValues);
 
   newGame.disabled = true;
 };
 
-newCard.addEventListener("click", getBtn.bind(null, 1));
-stopGame.addEventListener("click", stopBtn.bind(null, 1));
+newCard.addEventListener("click", getGame.bind(null, 1, "#player-card", playerCardValues));
+stopGame.addEventListener("click", getGame.bind(null, 1, "#computer-card", computerCardValues));
 newGame.addEventListener("click", gameBtn);
